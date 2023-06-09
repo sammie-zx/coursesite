@@ -1,0 +1,47 @@
+
+.container {
+    padding: 0;
+}
+
+.course {
+    padding: 0.25em;
+    margin-bottom: 1em;
+    width: 250px;
+    border-radius: 0.3em;
+    color: white !important;
+}
+
+.course .bottom div {
+    margin-bottom: 0.3em;
+}
+
+.creater {
+    color: var(--ocean);
+}
+
+/* Layout */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.course {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.course img {
+    width: 250px;
+    height: 150px;
+}
+
+.creater {
+    align-self: end;
+}
+
+.create-btn {
+    position: fixed;
+    top: 70px;
+}

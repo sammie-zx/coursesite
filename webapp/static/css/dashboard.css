@@ -1,0 +1,108 @@
+
+.container {
+    margin-top: 80px;
+    /* overflow-y: scroll; */
+}
+
+nav {
+    padding: 1em;
+    margin-bottom: 2em;
+    background-color: var(--almost-black);
+}
+
+.main div {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: var(--white-transparent-70);
+    margin-bottom:  0.3em;
+    padding: 0.5em;
+}
+
+.nav-content {
+    padding: 4em;
+    background-color: var(--dark-grey);
+    filter: drop-shadow(1px 1px 2px var(--almost-black));
+}
+
+.on-link {
+    color: var(--white-ish) !important;
+}
+
+.on-link:hover {
+    color: white !important;
+}
+
+.lightgrey-bar {
+    padding: 0.15em;
+    width: 30px;
+    margin: 0.2em;
+    background-color: lightgray;
+}
+
+.nav-btn:hover, .nav-btn:active {
+    margin-top: 0.2em;
+}
+
+/* Layouts */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    z-index: 5;
+    width: 100vw;
+}
+
+nav .brand {
+    align-self: flex-end;
+    justify-self: end;
+    flex-grow: 1;
+}
+
+.nav-btn-div {
+    flex-grow: 100;
+
+}
+
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    width: 35px;
+    cursor: pointer;
+}
+
+.nav-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.nav-content .main {
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.top .title {
+    position: fixed;
+    top: 25px;
+}
+
+.top .btn-close {
+    position: fixed;
+    top: 20px;
+    left: 260px;
+}

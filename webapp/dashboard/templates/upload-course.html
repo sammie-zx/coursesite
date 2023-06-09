@@ -1,0 +1,68 @@
+{% extends 'dashboard-base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uploadcourse.css') }}">
+{% endblock %}
+
+{% block title %} Upload Course {% endblock %}
+
+{% block navbar %} {{ super() }} {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <!-- Title -->
+            <div class="form-floating">
+                {% if form.title.errors %}
+                    {{ form.title(class='form-control is-invalid',
+                        placeholder=' ', id='titleInput') }}
+                    {% for error in form.title.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}    
+                    {{ form.title(class='form-control',
+                    placeholder=' ', id='titleInput') }}
+                {% endif %}
+                {{ form.title.label(for='titleInput', class='form-label')}}
+            </div>
+
+            <!-- Thumbnail -->
+            <div class="form-field">
+                {{ form.thumbnail.label(class='form-label') }}
+                {% if form.thumbnail.errors %}
+                    {{ form.thumbnail(class='form-control is-invalid') }}
+                    {% for error in form.thumbnail.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}    
+                    {{ form.thumbnail(class='form-control') }}
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating">
+                {% if form.description.errors %}
+                    {{ form.description(class='form-control is-invalid', placeholder=' ') }}
+                    {% for error in form.description.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}    
+                    {{ form.description(class='form-control', placeholder=' ') }}
+                {% endif %}
+                {{ form.description.label(class='form-label')}}
+            </div>
+
+            <!-- Submit -->
+            {{ form.submit(class='btn submit cherry-btn')}}
+
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}

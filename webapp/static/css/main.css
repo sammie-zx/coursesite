@@ -1,0 +1,117 @@
+:root {
+
+    /* --almost-black: #0A0C0D; */
+    --almost-black: #23262b;
+    --dark-grey: #303030;
+    --grey: #A6A6A6;
+    --cherry: #E01D3F;
+    --dusk: #4E4D7D;
+    --dusky-blue: #6B6AAC;
+    --slate-grey: #5E5E6C;
+    --white-ish: #c0c0c0;
+    --wine: rgb(136, 1, 51);
+    --background-color: #303030;
+    --charcoal-grey: #404040;
+}
+
+* {
+    letter-spacing: 1px !important;
+}
+
+form > div {
+    margin-bottom: 2em;
+}
+
+.form-control {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+}
+
+.heading {
+    text-align: center;
+}
+
+.submit {
+    width: 100%;
+}
+
+.popup {
+    padding: 1em;
+    background-color: var(--almost-black);
+}
+
+.link-white {
+    text-decoration: none;
+    color: white !important;
+}
+
+.link-white:hover {
+    color: var(--dusk) !important;
+    cursor: pointer;
+}
+
+.cherry-btn {
+    color: white !important;
+    /* padding: .8em; */
+    border-radius: 0.2em;
+    background-color: var(--cherry);
+}
+
+.cherry-btn:hover, .cherry-btn:active .cherry-btn:focus{
+    color: var(--cherry) !important;
+    background-color: var(--wine);
+}
+
+.transparent-btn {
+    border-radius: 0.2em;
+    color: rgba(186, 186, 186, 0.9);
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.transparent-btn:hover, .transparent-btn:active, .transparent-btn:focus{
+    color: white;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.text-grey {
+    color: var(--grey) !important;
+}
+
+.progress {
+    border-radius: 0.25em !important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.screenshot {
+    filter: drop-shadow(1px 1px 5px var(--almost-black));
+    border-radius: 10px;
+}
+
+/* Layout */
+.popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.popup form {
+    margin: 2em;
+    padding: 50px;
+    width: 400px;
+}
+
+.popup .back-btn {
+    margin: 4em;
+}
+

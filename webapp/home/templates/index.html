@@ -1,0 +1,50 @@
+{% extends 'index-base.html' %}
+{% block head %} {{ super() }} {% endblock%}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <div class="container">
+        
+        <div class="hero">
+            <div class="headline">
+                <h1>Host your courses <strong style="color: var(--cherry);">without fear</strong> of <strong>competition</strong>.</h1>
+            </div>
+            <div class="subtext">
+                We provide a dedicated space to host your course without any coding skill or having hiring a website developer.
+            </div>
+            <div class="bottom">
+                <a class="btn cherry-btn" href="{{ url_for('auth.signup') }}">Get Started</a>
+                <div>
+                    {% for i in range(4) %}
+                        &starf;
+                    {% endfor %}
+                    &star;
+                </div>
+            </div>
+            <video autoplay muted loop src="{{ url_for('static', filename='videos/hero_video.mp4') }}"></video>
+        </div>
+
+        <div class="features-bar">
+            <h4>What We Provide</h4>
+            <hr>
+            <div class="features">
+                <div class="feature">
+                    Coursesite allows you to host your course online for anyone to see or those you allow to see.
+                </div>
+                <div class="feature">
+                    A dedicated space to host your course without coding or hiring a website developer.
+                </div>
+                <div class="feature">
+                    You can choose who can see what you upload, so any file can be restrited for those not on your list 
+                    or accessible to anyone.
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+{% endblock %}

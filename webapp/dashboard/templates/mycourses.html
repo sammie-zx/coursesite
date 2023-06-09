@@ -1,0 +1,43 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %}Uploaded courses {% endblock %}
+
+{% block head %} 
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courselist.css')}}">
+{% endblock %}
+
+{% block navbar %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        {% if courses %}
+            {% for course in courses %}
+                <div class="course">
+                    <img src="{{ url_for('course.file', filename=course.thumbnail) }}" alt="No thumbnail">
+                    <div class="bottom">
+                        <div class="course-title">{{ course.title }}</div>
+                        <div class="actions">
+                            <a class="btn transparent-btn" href="{{ url_for('dashboard.edit', link=course.link) }}">
+                                EDIT
+                            </a>
+                            <a class="btn transparent-btn" href="{{ url_for('dashboard.orders', link=course.link) }}">
+                                ORDERS
+                            </a>
+                        </div>
+                    </div>                    
+                </div>
+            {% endfor %}
+
+        {% else %}
+            <!-- <div>You have not uploaded a course.</div> -->
+        {% endif %}
+
+        <div class="create-btn">
+            <a class="btn cherry-btn" href="{{ url_for('dashboard.upload_course')}}">Create course</a>
+        </div>
+    </div>
+{% endblock %}

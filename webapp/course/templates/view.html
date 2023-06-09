@@ -1,0 +1,121 @@
+{% extends 'course.html' %}
+
+{% block head %} 
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view.css') }}">
+{% endblock %}
+
+{% block title %} {{ course.title }} {% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% for msg in get_flashed_messages() %}
+                <div class="alert alert-success"> {{ msg }} </div>
+        {% endfor %}
+        
+        <!-- Head -->
+        <div class="head">
+
+            <!-- Thumbnail -->
+            <div class="tn-bar">
+                {% if course.thumbnail %}
+                    <img id="thumbnail" src="{{ url_for('course.file', filename=course.thumbnail) }}">
+                {% else %}
+                    <img id="thumbnail" src="" alt="No thumbnail image">
+                {% endif %}
+            </div>
+
+            <!-- Right Bar -->
+            <div class="right-bar">
+
+                <!-- Title -->
+                <div class="title-bar">
+                    <h2 id="title">{{ course.title }}</h2>
+                </div>
+
+                <!-- Description -->
+                <div class="description-bar">
+                    <div id="description">
+                        {% if course.description %}
+                            <span class="text-grey">{{ course.description }}</span>
+                        {% else %}
+                            <span class="text-grey">No description.</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Course page -->
+                <div class="order-bar">
+                    {% if order_data['created_course'] %}
+                        
+                    {% elif order_data['placed_order'] %}
+                        {% if order_data['accepted'] %}
+                            <div class="text-success"><i>Order accepted.</i></div>
+                        {% else %}
+                            <div class="text-warning"><i>Order waiting to be accepted.</i></div>
+                        {% endif %}
+
+                    {% else %}
+                        <a class="btn cherry-btn" href="{{ url_for('course.place_order', link=course.link) }}">
+                            PLACE ORDER
+                        </a>
+                    {% endif %}
+                </div>
+            </div>          
+        </div>
+
+        <!-- Section -->
+        <div class="sections">
+            <div class="sections-bar">
+                <h5>Course content</h5>
+            </div>
+            {% set sections = course.sections %}
+            {% for section in sections %}
+                <div class="section">
+                    <span  class="text-grey">Section: {{ section.index }}</span>
+                    <strong>{{ section.title }}</strong>
+                    <div class="files">
+                        <!-- Display uploaded files -->
+                        {% for file in section.files %}
+                            <div class="file">
+                                <p class="view-file link-white" fileId="{{ file.id }}">
+                                    {{ file.index }}. {{ file.title }}
+                                </p>
+                                {% if file.restrict_access %}
+                                    <small class="text-info">Order to view.</small>
+                                {% elif order_data['placed_order'] and not order_data['accepted'] %}
+                                    <small class="text-info">waiting for order to be accepted.</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- <input class="exit btn transparent-btn" type="button" value="Exit" display="none"> -->
+        </div>
+
+        <!-- Course details -->
+        <div class="details">
+            <div class="details-bar">
+                <h5>Course details</h5>
+            </div>
+            <article id="details">
+                {{ course.details | safe }}
+            </article>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/jquery-3.6.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/view.js') }}"></script>
+{% endblock %}

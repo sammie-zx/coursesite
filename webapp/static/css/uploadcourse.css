@@ -1,0 +1,36 @@
+
+.container {
+    padding: 1em;
+}
+
+.container form div {
+    margin-bottom: 2em;
+}
+
+.form-field .form-label {
+    margin-left: 0.8em;
+}
+
+textarea {
+    height: 10em;
+}
+
+/* Layout */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* overflow-y: scroll; */
+}
+
+.container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.submit {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    align-self: center;
+}

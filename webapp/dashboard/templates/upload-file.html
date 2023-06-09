@@ -1,0 +1,147 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %} Upload to {{ course.title }} {% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/f.css') }}"> -->
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% for msg in get_flashed_messages() %}
+                <div class="alert alert-success"> {{ msg }}</div>
+        {% endfor %}
+ 
+        <!-- Upload file -->
+        <form id="upload-file" action="" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <h4 class="heading">Upload File</h4> 
+            <hr> 
+            <br>
+
+            <div class="uploadto" link="{{ course.link }}" sectionid="{{ section_id }}"></div>
+            
+            <!-- Title -->
+            <div class="form-floating">
+                {% if form.title.errors %}
+                    {{ form.title(class='form-control is-invalid', placeholder=' ', 
+                        id='titleInput') }}
+                    {% for error in form.title.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.title(class='form-control', placeholder=' ', 
+                    id='titleInput') }}
+                {% endif %}
+                {{ form.title.label(class='form-label') }}
+            </div>
+
+            <!-- File number -->
+            <div class="form-floating">    
+                {% if form.number.errors %}
+                    {{ form.number(class='form-control is-invalid',
+                    placeholder=' ',id='numberInput') }}
+                    {% for error in form.number.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}    
+                    {{ form.number(class='form-control',
+                    placeholder=' ', id='numberInput') }}
+                {% endif %}
+                {{ form.number.label(for='numberInput', class='form-label')}}
+            </div>
+
+            <!-- File Type -->
+            <div class="">
+                {{ form.filetype.label(class='form-label') }}
+                {% if form.filetype.errors  %}
+                    {{ form.filetype(class='is-invalid form-control form-select', 
+                        placeholder=' ', id='fileTypeInput') }}
+                    {% for error in form.filetype.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.filetype(class='form-control form-select', 
+                        placeholder=' ', id='fileTypeInput') }}          
+                {% endif %}
+            </div>
+
+            <!-- File Upload -->
+            <div class="">
+                {{ form.file.label(class='form-label') }}
+                {% if form.file.errors  %}
+                    {{ form.file(class='is-invalid form-control', 
+                        id='fileInput') }}
+                    {% for error in form.file.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.file(class='form-control', 
+                        id='fileInput') }}          
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <div class="form-field">
+                {{ form.description.label(class='form-label') }} 
+                {% if form.description.errors  %}
+                    {{ form.description(class='is-invalid form-control') }}
+                    {% for error in form.description.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.description(class='form-control') }}          
+                {% endif %}
+            </div>
+
+            <!-- Restrict Access -->
+            <div class="form-field">
+                {{ form.restrict_access.label(class='form-label') }}
+                {% if form.restrict_access.errors  %}
+                    {{ form.restrict_access(class='is-invalid form-check-input') }}
+                    {% for error in form.restrict_access.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.restrict_access(class='form-check-input') }}          
+                {% endif %}
+                <p class="text-info">
+                    <small>
+                        Allow only those added to course <strong>access list</strong> to view this file.
+                        Uncheck box for course introduction.
+                    </small>
+                </p>
+            </div>
+            
+            <br>
+
+            <div class="text-warning">Make sure infomation provided is correct before uploading.</div>
+            
+            <!-- Submit -->
+            {{ form.upload_file(class='btn btn-danger submit') }}
+        </form>
+
+        <!-- Progress bar -->
+        <br>
+        <div class="progress" style="height: 15px;">
+            <div id="progressBar" class="progress-bar" role="progressbar" 
+            style="width: 0%; background-color: rgb(55, 156, 55);" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <br>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/upload-file.js') }}"></script>
+{% endblock %}

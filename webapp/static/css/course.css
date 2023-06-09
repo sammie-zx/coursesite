@@ -1,0 +1,39 @@
+
+nav {
+    padding: 1em;
+    margin-bottom: 2em;
+    background-color: var(--dark-grey);
+}
+
+.main div {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: var(--white-transparent-70);
+    margin-bottom:  0.3em;
+    padding: 0.5em;
+}
+
+.on-link {
+    color: var(--white-ish) !important;
+}
+
+.on-link:hover {
+    color: white !important;
+}
+
+.nav-active {
+    border-radius: 0.2em;
+    background-color: var(--dusk);
+}
+
+/* Layout */
+nav {
+    position: fixed;
+    z-index: 1;
+    background-color: #434343 !important; /* temp color */
+}
+
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+}

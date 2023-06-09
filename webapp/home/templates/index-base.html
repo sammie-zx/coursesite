@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %} - coursesite</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-dark.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    
+        {% block navbar %}
+            <nav class="home-nav">
+                <div class="brand">coursesite.com.ng</div>
+                <div class="links">
+                    <div>
+                        <a class="link-white" href="{{ url_for('dashboard.index') }}">Dashboard</a>
+                    </div>
+                    {% if current_user.is_authenticated %}
+                        <div>
+                            <a class="link-white" href="{{ url_for('auth.logout') }}" class="">Log Out</a>
+                        </div>
+                    {% else %}
+                        <div>
+                            <a class="link-white" href="{{ url_for('auth.login') }}" class="">Log In</a>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <a class="btn cherry-btn" href="{{ url_for('auth.signup') }}">Sign Up</a>
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+
+    {% endblock %}
+
+    {% block footer %}
+            <footer>
+                &copy; coursesite 2023 by theSniperSpyder
+            </footer>
+    {% endblock %}
+</body>
+
+</html>

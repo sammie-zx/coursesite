@@ -1,0 +1,340 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %} Edit: {{ course.title }} {% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <!-- Head -->
+        <div class="head">
+            <!-- Thumbnail -->
+            <div class="tn-bar">
+                {% if course.thumbnail %}
+                    <img id="thumbnail" src="{{ url_for('course.file', filename=course.thumbnail) }}">
+                {% else %}
+                    <img id="thumbnail" src="" alt="No thumbnail image">
+                {% endif %}
+
+                <form class="form-field" method="post" style="display: none" enctype="multipart/form-data">
+                    {{ forms['tn_form'].hidden_tag() }}
+                    {{ forms['tn_form'].thumbnail.label(class='form-label') }}
+                    {% if forms['tn_form'].thumbnail.errors %}
+                        {{ forms['tn_form'].thumbnail(class='form-control is-invalid') }}
+                        {% for error in forms['tn_form'].thumbnail.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}    
+                        {{ forms['tn_form'].thumbnail(class='form-control') }}
+                    {% endif %}
+                    {{ forms['tn_form'].upload_tn(class='btn btn-danger') }}
+                </form>
+            </div>
+
+            <!-- Right Bar -->
+            <div class="right-bar">
+                <!-- Title -->
+                <div class="title-bar">
+                    <h2 id="title">{{ course.title }}</h2>
+                    <form class="form-floating" method="post" style="display: none;">
+                        {{ forms['title_form'].hidden_tag() }}
+                        {% if forms['title_form'].title.errors %}
+                            {{ forms['title_form'].title(class='form-control is-invalid',
+                                placeholder=' ', value=course.title, id='titleInput') }}
+                            {% for error in forms['title_form'].title.errors %}
+                                <div class="error">{{ error }}</div>
+                            {% endfor %}
+                        {% else %}    
+                            {{ forms['title_form'].title(class='form-control',
+                            placeholder=' ', value=course.title, id='titleInput') }}
+                        {% endif %}
+                        {{ forms['title_form'].title.label(for='titleInput', class='form-label')}}
+                        {{ forms['title_form'].save_title(class='btn btn-danger') }}
+                    </form>
+                </div>
+
+                <!-- Description -->
+                <div class="description-bar">
+                    <div id="description">
+                        {% if course.description %}
+                            <span class="text-grey">{{ course.description }}</span>
+                        {% else %}
+                            <span class="text-grey">No description.</span>
+                        {% endif %}
+                    </div>
+                    <form class="form-floating" method="post" style="display: none;">
+                        {{ forms['description'].hidden_tag() }}
+                        {% if forms['description'].description.errors %}
+                            {{ forms['description'].description(class='form-control is-invalid',
+                                placeholder=' ', value=course.description, id='descriptionInput') }}
+                            {% for error in forms['description'].description.errors %}
+                                <div class="error">{{ error }}</div>
+                            {% endfor %}
+                        {% else %}    
+                            {{ forms['description'].description(class='form-control',
+                            placeholder=' ', value=course.description, id='descriptionInput') }}
+                        {% endif %}
+                        {{ forms['description'].description.label(for='descriptionInput',
+                            class='form-label')}}
+                        {{ forms['description'].save_description(class='btn btn-danger') }}
+                    </form>
+                </div>
+
+                <!-- Course page -->
+                <div class="action">
+                    <a target="_blank" class="underline" href="{{ url_for('course.view', link=course.link) }}">
+                        localhost:5000{{ url_for('course.view', link=course.link) }}
+                    </a> <br>
+                    <a target="_blank" class="btn transparent-btn" href="{{ url_for('dashboard.orders', link=course.link) }}">
+                        ORDERS
+                    </a>
+                    <input class="btn delete-course-btn" course-title="{{ course.title }}" type="button" value="Delete Course">
+                </div>
+            </div>
+            <i><small class="text-warning">click any editable element to edit it.</small></i>
+
+        </div>
+
+        <!-- Section -->
+        <div class="sections">
+            <div class="sections-bar">
+                <h5>Course content</h5>
+                <input class="btn cherry-btn" id="add-section-btn" type="button" value="Add new section">
+            </div>
+            {% for section in sections %}
+                <div class="section">
+                    <span  class="text-grey">Section: {{ section.index }}</span>
+                    <strong>{{ section.title }}</strong>
+                    <div class="actions">
+                        <input sectionId="{{ section.id }}" title="{{ section.title }}" number="{{ section.index }}" 
+                            class="btn transparent-btn edit-section-btn" type="button" value="Edit">
+                        <input sectionId="{{ section.id }}" title="{{ section.title }}" number="{{ section.index }}"
+                            class="btn delete-section-btn" type="button" value="Delete">
+                    </div>
+                    <div class="files">
+                        <!-- Display uploaded files -->
+                        {% for file in section.files %}
+                            <div class="file">
+                                <div class="link-white file-edit-btn" fileId="{{ file.id }}">
+                                    {{ file.index }}. {{ file.title }}
+                                </div>
+
+                                {% if file.restrict_access %}
+                                    <small class="text-info">Order to view.</small>
+                                {% endif %}
+                                
+                                <input fileId="{{ file.id }}" class="btn delete-file-btn" type="button" 
+                                    value="Delete">
+                            </div>
+                        {% endfor %}
+
+                        <a target="_blank" href="{{ url_for('dashboard.upload_file', link=course.link, section_id=section.id) }}"
+                        class="btn btn-danger upload-btn"> Upload </a>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- <input class="exit btn transparent-btn" type="button" value="Exit" display="none"> -->
+        </div>
+
+        <!-- Course details -->
+        <div class="details">
+            <h5>Course details</h5>
+            <article id="details">
+                {{ course.details | safe }}
+            </article>            
+            <form method="post" style="display: none;">
+                {{ ckeditor.create(value=course.details) }}
+                <br>
+                <input type="submit" class="btn btn-danger" value="Save">
+            </form>
+
+            {{ ckeditor.load(pkg_type='full') }}
+
+            <div class="text-warning">
+                Enter details on course, like subject, language, level, price and payment method, etc.</div>
+            </div>
+            
+        </div>
+
+        <!-- Popup Forms -->
+        <section>
+
+            <!-- Add section form -->
+            <form id="add-section" method="post" style="display: none">
+                <h4 class="heading">Add New Section</h4> 
+                <hr> 
+                <br>     
+                {{ forms['section'].hidden_tag() }}
+
+                <!-- Title -->
+                <div class="form-floating">
+                    {% if forms['section'].title.errors %}
+                        {{ forms['section'].title(class='form-control is-invalid',
+                        placeholder=' ', id='titleInput') }}
+                        {% for error in forms['section'].title.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}    
+                        {{ forms['section'].title(class='form-control',
+                        placeholder=' ', id='titleInput') }}
+                    {% endif %}
+                    {{ forms['section'].title.label(for='titleInput')}}
+                </div>
+    
+                <!-- Section Number -->
+                <div class="form-floating">    
+                    {% if forms['section'].number.errors %}
+                        {{ forms['section'].number(class='form-control is-invalid',
+                        placeholder=' ',id='numberInput') }}
+                        {% for error in forms['section'].number.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}    
+                        {{ forms['section'].number(class='form-control',
+                        placeholder=' ', id='numberInput') }}
+                    {% endif %}
+                    {{ forms['section'].number.label(for='numberInput')}}
+                </div>
+                    {{ forms['section'].create_sect(class='btn btn-danger submit') }}
+            </form>
+
+            <!-- Edit section -->
+            <form id="edit-section" action="" method="post" style="display: none;">
+                {{ forms['edit_sect'].hidden_tag() }}
+
+                <!-- Title -->
+                <div class="form-floating">
+                    {% if forms['edit_sect'].title.errors %}
+                        {{ forms['edit_sect'].title(class='form-control is-invalid edit-section-title', placeholder=' ') }}
+                            {% for error in forms['edit_sect'].title.errors %}
+                                    <div class="error">{{ error }}</div>
+                            {% endfor %}
+                    {% else %}
+                        {{ forms['edit_sect'].title(class='form-control edit-section-title', placeholder=' ') }}
+                    {% endif %}
+                    {{ forms['edit_sect'].title.label(class='form-label') }}
+                </div>
+
+                <!-- Section number -->
+                <div class="form-floating">
+                    {% if forms['edit_sect'].number.errors %}
+                        {{ forms['edit_sect'].number(class='form-control is-invalid edit-section-number', 
+                            placeholder=' ') }}
+                            {% for error in forms['edit_sect'].number.errors %}
+                                    <div class="error">{{ error }}</div>
+                            {% endfor %}
+                    {% else %}
+                        {{ forms['edit_sect'].number(class='form-control edit-section-number', placeholder=' ') }}
+                    {% endif %}
+                    {{ forms['edit_sect'].number.label(class='form-label') }}
+                </div>
+                {{ forms['edit_sect'].save_sect(class='btn btn-danger') }}
+            </form>
+
+            <!-- Delete Confirmation -->
+            <form id="confirmation" action="" method="post" style="display: none;">
+                {{ forms['confirmation'].hidden_tag() }}
+                <div class="confirmation-message"></div>
+                {{ forms['confirmation'].confirm(class='btn btn-danger') }}
+            </form>
+
+            <!-- Edit File -->
+            <form id="edit-file" action="" method="post" style="display: none;">
+                {{ forms['edit_file'].hidden_tag() }}
+                <h4 class="heading">Edit File</h4> 
+                <hr> 
+                <br>
+                
+                <!-- Title -->
+                <div class="form-floating">
+                    {% if forms['edit_file'].title.errors %}
+                        {{ forms['edit_file'].title(class='form-control is-invalid file-title-edit', placeholder=' ', 
+                            id='titleInput') }}
+                        {% for error in forms['edit_file'].title.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ forms['edit_file'].title(class='form-control file-title-edit', placeholder=' ', 
+                        id='titleInput') }}
+                    {% endif %}
+                    {{ forms['edit_file'].title.label(class='form-label') }}
+                </div>
+
+                <!-- File number -->
+                <div class="form-floating">    
+                    {% if forms['edit_file'].number.errors %}
+                        {{ forms['edit_file'].number(class='form-control is-invalid file-number-edit',
+                        placeholder=' ',id='numberInput') }}
+                        {% for error in forms['edit_file'].number.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}    
+                        {{ forms['edit_file'].number(class='form-control file-number-edit',
+                        placeholder=' ', id='numberInput') }}
+                    {% endif %}
+                    {{ forms['edit_file'].number.label(for='numberInput', class='form-label')}}
+                </div>
+
+                <!-- Description -->
+                <div class="form-field">
+                    {{ forms['edit_file'].description.label(class='form-label') }} 
+                    <small class="form-label text-warning">optional</small>
+                    {% if forms['edit_file'].description.errors  %}
+                        {{ forms['edit_file'].description(class='is-invalid form-control file-description-edit') }}
+                        {% for error in forms['edit_file'].description.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ forms['edit_file'].description(class='form-control file-description-edit') }}          
+                    {% endif %}
+                </div>
+
+                <!-- Restrict Access -->
+                <div class="form-field">
+                    {{ forms['edit_file'].restrict_access.label(class='form-label') }}
+                    {% if forms['edit_file'].restrict_access.errors  %}
+                        {{ forms['edit_file'].restrict_access(class='is-invalid form-check-input 
+                            edit-restrict-access') }}
+                        {% for error in forms['edit_file'].restrict_access.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ forms['edit_file'].restrict_access(class='form-check-input edit-restrict-access') }}      
+                    {% endif %}
+                    <p class="text-info">
+                        <small>
+                            Allow only those added to course <strong>access list</strong> to view this file.
+                            Uncheck box for course introduction.
+                        </small>
+                    </p>
+                </div>
+
+                <!-- Submit -->
+                {{ forms['edit_file'].save_file_edit(class='btn btn-danger submit') }}
+
+                <div>
+                    <br>
+                    <a target="_blank" class="link-white change-upload"><small>Do you want to change upload file?</small><a>
+                </div>
+            </form>
+
+        </section>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/edit.js') }}"></script>
+{% endblock %}

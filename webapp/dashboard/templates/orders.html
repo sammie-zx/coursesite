@@ -1,0 +1,39 @@
+{% extends 'dashboard-base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
+{% endblock %}
+
+{% block title %} Orders for {{ title }} {% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    
+    <div class="container">
+        <div class="order-list">
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order">
+                        <div><i>{{ order.user.username }}</i></div>
+                        <div><i>{{ order.user.email }}</i></div>
+                        <br>
+                        {% if order.accepted %}
+                                <a class="text-danger" href="{{ url_for('dashboard.decline_order', order_id=order.id) }}">
+                                    Block</a>
+                        {% else %}
+                                <a class="text-success" href="{{ url_for('dashboard.accept_order', order_id=order.id) }}">
+                                    Accept</a>
+                        {% endif %}
+                        
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div>This course has no order.</div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

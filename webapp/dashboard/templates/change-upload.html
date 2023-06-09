@@ -1,0 +1,81 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %} Change upload of {{ course.title }} {% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+
+        {% for msg in get_flashed_messages() %}
+                <div class="alert alert-success"> {{ msg }}</div>
+        {% endfor %}
+ 
+        <!-- Upload file -->
+        <form id="upload-file" action="" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <h4 class="heading">Change Upload</h4> 
+            <hr> 
+            <br>
+
+            <div class="change" link="{{ course.link }}" fileId="{{ file_id }}"></div>
+            
+            <!-- File Type -->
+            <div class="">
+                {{ form.filetype.label(class='form-label') }}
+                {% if form.filetype.errors  %}
+                    {{ form.filetype(class='is-invalid form-control form-select', 
+                        placeholder=' ', id='fileTypeInput') }}
+                    {% for error in form.filetype.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.filetype(class='form-control form-select', 
+                        placeholder=' ', id='fileTypeInput') }}          
+                {% endif %}
+            </div>
+
+            <!-- File Upload -->
+            <div class="">
+                {{ form.file.label(class='form-label') }}
+                {% if form.file.errors  %}
+                    {{ form.file(class='is-invalid form-control', 
+                        id='fileInput') }}
+                    {% for error in form.file.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ form.file(class='form-control', 
+                        id='fileInput') }}          
+                {% endif %}
+            </div>
+
+            <!-- Submit -->
+            {{ form.upload_file(class='btn btn-danger submit') }}
+        </form>
+
+        <!-- Progress bar -->
+        <br>
+        <div class="progress" style="height: 15px;">
+            <div id="progressBar" class="progress-bar" role="progressbar" 
+            style="width: 0%; background-color: rgb(55, 156, 55);" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <br>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/change-upload.js') }}"></script>
+{% endblock %}

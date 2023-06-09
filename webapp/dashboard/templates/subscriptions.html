@@ -1,0 +1,33 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %} Courses {% endblock %}
+
+{% block head %} 
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courselist.css')}}">
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if courses %}
+            {% for course in courses %}
+            <a class="course" href="{{ url_for('course.view', link=course.link) }}">
+                <img src="{{ url_for('course.file', filename=course.thumbnail) }}" alt="no thumbnail">
+                <div class="bottom">
+                    <div class="course-title">{{ course.title }}</div>
+                    <div class="actions">
+                        <i><small class="creater">by {{ course['creator'] }}</small></i>
+                    </div>
+                </div>                    
+            </a>
+            {% endfor %}
+            
+        {% else %}
+                <div>You are not subscribed to any course.</div>
+        {% endif %}
+    </div>
+{% endblock %}
